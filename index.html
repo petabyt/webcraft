@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>WebCraft Alpha</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+	</script>
+	<script src="https://code.jquery.com/jquery-1.12.4.js">
+	</script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js">
+	</script>
+</head>
+<body>
+<div id="loading">
+	<center>
+		<h1 style="margin-top: 100px; color: white;">Generating World...</h1>
+	</center>
+</div>
+<div id="pausemenu">
+	<br>
+	<center>
+		<button onclick="save()" class="button">Save World</button>
+		<br>
+		<br>
+		<button onclick="settings()" class="button">Settings</button>
+		<br>
+		<br>
+		<button onclick='mainmenu()' class="button">Main Menu</button>
+		<br>
+		<br>
+		<button onclick='document.getElementById("pausemenu").style.visibility = "hidden";' class="button">Cancel</button>
+		<br>
+		<br>
+		<span style="background-color: white;">WebCraft 2017 | Not afflicted with Mojang</span>
+	</center>
+</div>
+<div id="blockmenu">
+	<div id="menublock" class="menublock-dirt" onclick="currentplaceblock = 'dirt' ">
+		
+	</div>
+	<div id="menublock" class="menublock-grass" onclick="currentplaceblock = 'grass' ">
+		
+	</div>
+	<div id="menublock" class="menublock-stone" onclick="currentplaceblock = 'stone' ">
+		
+	</div>
+</div>
+<div id="gamecanvas">
+	<center>
+		<div id="startmenu">
+		<h1>WebCraft</h1>
+		<span id="cooltext" class="cooltext"></span>
+		<br>
+		<button class="button" onclick="newworld()">New World</button>
+		<br><br>
+		<button class="button" onclick="load()">Load World</button>
+	</div>
+	</center>
+</div>
+</div>
+</body>
+<script>
+	var titles = ["Html5!","Online!","Play 4 Free!","Made By Pufflegamerz","Look ma, no flash player!","POTATOS134!","Look ma, no Unity Web Player!"];
+	document.getElementById("cooltext").innerHTML = titles[Math.floor(Math.random() * titles.length-1) + 1];
+	var block_y = 0;
+	var block_x = 0;
+	var y = 100;;
+	var x = 10;
+	var i;
+	var o;
+	var block = 0;
+	rowheight = 0;
+	var gamestarted = true;
+	var currentblock;
+	var currentplaceblock = "dirt";
+	var saveworld = [];
+	function newworld() {
+		document.getElementById("loading").style.visibility = "visible";
+
+		setTimeout(generate, 20);
+	}
+	function generate() {
+		block_x = 0;
+		gamestarted = true;
+		document.getElementById("gamecanvas").innerHTML = "";
+		document.getElementById("gamecanvas").style.cursor = "crosshair";
+		for (o = 0; o < 40; o++) {
+			for (i = 0; i < Math.floor(Math.random() * 10) + 5; i++) {
+			document.getElementById('gamecanvas').innerHTML = document.getElementById('gamecanvas').innerHTML + '<div style="left:'+block_x+'%;bottom:'+block_y+'%;" id="block'+block+'" class="stone" onmousedown="currentblock = this.id; blockdo()">';
+			block_y = block_y + 5;
+			block++
+		}
+		rowheight = rowheight + i;
+		for (i = 0; i < Math.floor(Math.random() * 5) + 2; i++) {
+			document.getElementById('gamecanvas').innerHTML = document.getElementById('gamecanvas').innerHTML + '<div style="left:'+block_x+'%;bottom:'+block_y+'%;" id="block'+block+'" class="dirt" onmousedown="currentblock = this.id;blockdo()">';
+			block_y = block_y + 5;
+			block++
+		}
+		rowheight = rowheight + i;
+		for (i = 0; i < Math.floor(Math.random() * 1) + 1; i++) {
+			document.getElementById('gamecanvas').innerHTML = document.getElementById('gamecanvas').innerHTML + '<div style="left:'+block_x+'%;bottom:'+block_y+'%;" id="block'+block+'" class="grass" onmousedown="currentblock = this.id;blockdo()">';
+			block_y = block_y + 5;
+			block++
+		}
+		for (i = 0; i < 20 - rowheight; i++) {
+			document.getElementById('gamecanvas').innerHTML = document.getElementById('gamecanvas').innerHTML + '<div style="left:'+block_x+'%;bottom:'+block_y+'%;" id="block'+block+'" class="nothing" onmousedown="currentblock = this.id;blockdo()">';
+			block_y = block_y + 5;
+			block++
+		}
+		// Reset variables
+		rowheight = rowheight + i;
+		block_y = 0;
+		block_x = block_x + 2.5;
+		rowheight = 0;
+		}
+		document.getElementById("loading").style.visibility = "hidden";
+		document.getElementById("blockmenu").style.visibility = "visible";
+		// Generate Player
+		document.getElementById("gamecanvas").innerHTML = document.getElementById("gamecanvas").innerHTML + "<div id='player'></div>";
+		//var gravity = setInterval( dogravity, 33);
+	}
+	function save() {
+		for (var p = 0; p < 840; p++) {
+			saveworld.push(eval("block"+p+".className"));
+		}
+		prompt("This is your world code. Copy and paste it somewhere safe!",saveworld)
+	}
+	function load() {
+		document.getElementById("blockmenu").style.visibility = "visible";
+		var block_y = 0;
+		var block_x = 0;
+		var block = 0;
+		var currentblockload = 0;
+		document.getElementById("gamecanvas").innerHTML = "";
+		var worldcode = prompt("Please enter your world code.");
+		var worldtoload = worldcode.split(",");
+		for (var o = 0; o < 40; o++) {
+			for (var i = 0; i < 20; i++) {
+				if (worldtoload[currentblockload] == "dirt") {
+document.getElementById('gamecanvas').innerHTML = document.getElementById('gamecanvas').innerHTML + '<div style="left:'+block_x+'%;bottom:'+block_y+'%;" id="block'+block+'" class="dirt" onmousedown="currentblock = this.id; blockdo()">';
+				} else if (worldtoload[currentblockload] == "stone") {
+document.getElementById('gamecanvas').innerHTML = document.getElementById('gamecanvas').innerHTML + '<div style="left:'+block_x+'%;bottom:'+block_y+'%;" id="block'+block+'" class="stone" onmousedown="currentblock = this.id; blockdo()">';
+				} else if (worldtoload[currentblockload] == "nothing") {
+document.getElementById('gamecanvas').innerHTML = document.getElementById('gamecanvas').innerHTML + '<div style="left:'+block_x+'%;bottom:'+block_y+'%;" id="block'+block+'" class="nothing" onmousedown="currentblock = this.id; blockdo()">';
+				} else if (worldtoload[currentblockload] == "grass") {
+document.getElementById('gamecanvas').innerHTML = document.getElementById('gamecanvas').innerHTML + '<div style="left:'+block_x+'%;bottom:'+block_y+'%;" id="block'+block+'" class="grass" onmousedown="currentblock = this.id; blockdo()">';
+				} else {
+
+document.getElementById('gamecanvas').innerHTML = document.getElementById('gamecanvas').innerHTML + '<div style="left:'+block_x+'%;bottom:'+block_y+'%;" id="block'+block+'" class="nothing" onmousedown="currentblock = this.id; blockdo()">';
+				
+				}
+			
+			block_y = block_y + 5;
+			block++
+			currentblockload++
+		}
+		currentblockload++
+		// Reset variables
+		block_y = 0;
+		block_x = block_x + 2.5;
+		}
+		
+	}
+
+	document.body.onkeyup = function(e){
+    if(e.keyCode == 38){
+    	if (gamestarted) {
+        	y = y - 10;
+       document.getElementById('player').style.top = y + "px";
+        }
+     
+    }
+     if(e.keyCode == 39){
+    	if (gamestarted) {
+    		x = x + 5;
+       document.getElementById('player').style.left = x + "px";
+    	}
+     
+    }
+    if(e.keyCode == 37){
+    	if (gamestarted) {
+    		x = x - 5;
+       document.getElementById('player').style.left = x + "px";
+    	}
+     
+    }
+}
+
+
+function blockdo() {
+	if (document.getElementById(currentblock).className == "nothing") {
+		document.getElementById(currentblock).className = currentplaceblock;
+	} else {
+		document.getElementById(currentblock).className = "nothing";
+	}
+}
+function dogravity() {
+	y = y + 5;
+	document.getElementById('player').style.left = x + "px";
+	document.getElementById('player').style.top = y + "px";
+	if (collision($('#player'), $('.grass'))) {
+		y = y - 5;
+	}
+	if (collision($('#player'), $('.dirt'))) {
+		y = y - 5;
+	}
+	if (collision($('#player'), $('.stone'))) {
+		y = y - 5;
+	}
+
+}
+function collision($div1, $div2) {
+      var x1 = $div1.offset().left;
+      var y1 = $div1.offset().top;
+      var h1 = $div1.outerHeight(true);
+      var w1 = $div1.outerWidth(true);
+      var b1 = y1 + h1;
+      var r1 = x1 + w1;
+      var x2 = $div2.offset().left;
+      var y2 = $div2.offset().top;
+      var h2 = $div2.outerHeight(true);
+      var w2 = $div2.outerWidth(true);
+      var b2 = y2 + h2;
+      var r2 = x2 + w2;
+        
+      if (b1 < y2 || y1 > b2 || r1 < x2 || x1 > r2) return false;
+      return true;
+    }
+    document.body.onkeyup = function(e){
+    if(e.keyCode == 27){
+        if (gamestarted) {
+        	if (document.getElementById("pausemenu").style.visibility == "hidden") {
+        	document.getElementById("pausemenu").style.visibility = "visible";
+        } else {
+        	document.getElementById("pausemenu").style.visibility = "hidden";
+        }
+        }
+    }
+}
+function mainmenu() {
+	document.getElementById("gamecanvas").innerHTML = '<center> <div id="startmenu"> <h1>WebCraft</h1> <span id="cooltext" class="cooltext"></span> <br> <button class="button" onclick="newworld()">New World</button> <br><br> <button class="button" onclick="load()">Load World</button> </div> </center>';
+	document.getElementById("blockmenu").style.visibility = "hidden";
+	document.getElementById("pausemenu").style.visibility = "hidden";
+}
+</script>
+<style>
+	#menublock {
+		width: 90px;
+		height: 90px;
+		margin-top: 5px;
+		margin-left: 5px;
+		display: inline-block;
+		border: 1px solid black;
+		background-repeat: no-repeat;
+		background-size: cover;
+		cursor: pointer;
+
+
+	}
+	.menublock-dirt {
+		background: url("assets/dirt.png");
+	}
+	.menublock-stone {
+		background: url("assets/stone.png");
+	}
+	.menublock-grass {
+		background: url("assets/grass.png");
+	}
+	#blockmenu {
+		position: absolute;
+		bottom: 1px;
+		left: 1px;
+		width: 300px;
+		height: 100px;
+		display: table;
+		border: 1px solid black;
+		z-index: 1;
+		background-color: white;
+		border-radius: 10px;
+		visibility: hidden;
+	}
+	#player {
+		top: 50px;
+		left: 50px;
+		position: absolute;
+		background-image: url("assets/player-right.png");
+		z-index: 6;
+		background-repeat: no-repeat;
+		background-size: cover;
+		width: 30px;
+		height: 120px;
+		border: 1px solid black;
+		visibility: hidden;
+	}
+	#pausemenu {
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		background:rgba(1,1,1,.7);
+		z-index: 5;
+		visibility: hidden;
+
+	}
+	#startmenu {
+		width: 100%;
+		height: 100%;
+		top: 0px;
+		left: 0px;
+		position: absolute;
+		background: url("assets/dirt.png");
+	}
+	#loading {
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		width: 100%;
+		height: 100%;
+		background: url("assets/stone.png");
+		visibility: hidden;
+		z-index: 1;
+	}
+	.button {
+		width: 300px;
+		height: 30px;
+		border: 1px solid black;
+		background-color: grey;
+		cursor: pointer;
+	}
+	.button:hover {
+		background-color: lightgrey;
+	}
+	.cooltext {
+		position: absolute;
+		left:705px; 
+		top: 50px;
+		transform: rotate(-12deg);
+		animation-name: bounce;
+    	animation-duration: .3s;
+    	animation-iteration-count: 86400;
+    	animation-direction: alternate;
+	}
+	@keyframes bounce {
+    	from {font-size:18px;}
+    	to {font-size:20px;}
+    
+	}
+	body {
+		background-color: lightblue;
+	}
+
+	.nothing {
+		background-color: transparent;
+		width: 2.5%;
+		height: 5%;
+		position: absolute;
+		background-repeat: no-repeat;
+		background-size: cover;
+	}
+	.dirt {
+		background: url("assets/dirt.png");
+		width: 2.5%;
+		height: 5%;
+		position: absolute;
+		background-repeat: no-repeat;
+		background-size: cover;
+	}
+	.stone {
+		background: url("assets/stone.png");
+		width: 2.5%;
+		height: 5%;
+		position: absolute;
+		background-repeat: no-repeat;
+		background-size: cover;
+	}
+	.grass {
+		background: url("assets/grass.png");
+		width: 2.5%;
+		height: 5%;
+		position: absolute;
+		background-repeat: no-repeat;
+		background-size: cover;
+	}
+	.grass:hover {box-sizing: border-box;border: 1px solid black;}
+	.dirt:hover {box-sizing: border-box;border: 1px solid black;}
+	.stone:hover {box-sizing: border-box;border: 1px solid black;}
+	.nothing:hover {box-sizing: border-box;border: 1px solid black;}
+	#gamecanvas {
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		top: 0px;
+		left: 0px;
+	}
+</style>
+</html>

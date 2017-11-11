@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>WebCraft Alpha</title>
+	<title>WebCraft Alpha 1.1</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
 	</script>
 	<script src="https://code.jquery.com/jquery-1.12.4.js">
@@ -43,25 +43,28 @@
 	<div id="menublock" class="menublock-stone" onclick="currentplaceblock = 'stone' ">
 		
 	</div>
+	<div id="menublock" class="menublock-sign" onclick="currentplaceblock = 'sign' ">
+		
+	</div>
 </div>
 <div id="gamecanvas">
 	<center>
 		<div id="startmenu">
-		<h1>WebCraft</h1>
+		<h1 style="color: white;">WebCraft</h1>
 		<span id="cooltext" class="cooltext"></span>
 		<br>
 		<button class="button" onclick="newworld()">New World</button>
 		<br><br>
-		<button class="button" onclick="load()">Load World</button>
-		<br><br>
-		<p>World loading does not work. :(</p>
+		<button class="button" onclick="load()">Load World (Unfished)</button>
+		<p style="color: white;">Whats New in WebCraft 1.1?</p>
+		<p style="color: white;">• Added signs! (hover over them to see the text)</p>
 	</div>
 	</center>
 </div>
 </div>
 </body>
 <script>
-	var titles = ["Look ma, no canvas!","Html5!","Online!","Play 4 Free!","Made By Pufflegamerz","Look ma, no flash player!","POTATOS134!","Look ma, no Unity Web Player!"];
+	var titles = ["Look ma, no canvas!","Html5!","Online!","Play 4 Free!","Made By Pufflegamerz","Look ma, no flash player!","POTATOS134!","Look ma, no Unity Web Player!","Totally not copying Minecraft!"];
 	document.getElementById("cooltext").innerHTML = titles[Math.floor(Math.random() * titles.length-1) + 1];
 	var block_y = 0;
 	var block_x = 0;
@@ -190,9 +193,16 @@ document.getElementById('gamecanvas').innerHTML = document.getElementById('gamec
 
 function blockdo() {
 	if (document.getElementById(currentblock).className == "nothing") {
+		if (currentplaceblock == "sign") {
+			var signtext = prompt("What would you like this sign to say?","Hello!");
+			document.getElementById(currentblock).className = currentplaceblock;
+			document.getElementById(currentblock).title = signtext;
+		}
 		document.getElementById(currentblock).className = currentplaceblock;
 	} else {
+
 		document.getElementById(currentblock).className = "nothing";
+		document.getElementById(currentblock).title = signtext;
 	}
 }
 function dogravity() {
@@ -267,11 +277,14 @@ function mainmenu() {
 	.menublock-grass {
 		background: url("assets/grass.png");
 	}
+	.menublock-sign {
+		background: url("assets/sign.png");
+	}
 	#blockmenu {
 		position: absolute;
 		bottom: 1px;
 		left: 1px;
-		width: 300px;
+		width: 400px;
 		height: 100px;
 		display: table;
 		border: 1px solid black;
@@ -341,6 +354,7 @@ function mainmenu() {
     	animation-duration: .3s;
     	animation-iteration-count: 86400;
     	animation-direction: alternate;
+    	color: white;
 	}
 	@keyframes bounce {
     	from {font-size:18px;}
@@ -383,9 +397,18 @@ function mainmenu() {
 		background-repeat: no-repeat;
 		background-size: cover;
 	}
+	.sign {
+		background: url("assets/sign.png");
+		width: 2.5%;
+		height: 5%;
+		position: absolute;
+		background-repeat: no-repeat;
+		background-size: cover;
+	}
 	.grass:hover {box-sizing: border-box;border: 1px solid black;}
 	.dirt:hover {box-sizing: border-box;border: 1px solid black;}
 	.stone:hover {box-sizing: border-box;border: 1px solid black;}
+	.sign:hover {box-sizing: border-box;border: 1px solid black;}
 	.nothing:hover {box-sizing: border-box;border: 1px solid black;}
 	#gamecanvas {
 		width: 100%;
